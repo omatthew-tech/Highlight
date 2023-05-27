@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{{ user.username }}'s Profile</h2>
+    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+    <p>Location: {{ profile.location }}</p>
+    <p>Bio: {{ profile.bio }}</p>
+    <img src="{{ profile.image.url }}" alt="Profile picture">
+    
+    <h2>Posts</h2>
+    {% for post in posts %}
+        <div class="post">
+            <p>{{ post.text }}</p>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post image">
+            {% endif %}
+            <p>Posted on {{ post.created_at }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+

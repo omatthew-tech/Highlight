@@ -84,3 +84,53 @@ from .models import Post
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render(request, 'post.html', {'post': post})
+
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
+
+def login_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        # get user by email
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            user = None
+        # verify password
+        if user is not None and user.check_password(password):
+            login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'login.html', {'error': 'Invalid email or password.'})
+    else:
+        return render(request, 'login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+from django.shortcuts import render
+from .models import Post
+
+def profile_view(request):
+    user = request.user
+    profile = user.profile
+    posts = Post.objects.filter(user=user).order_by('-created_at')
+    return render(request, 'profile.html', {'user': user, 'profile': profile, 'posts': posts})
+
+
+from .forms import ProfileUpdateForm
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile') # Assuming the name of the profile view is 'profile'
+    else:
+        form = ProfileUpdateForm(instance=request.user.profile)
+    return render(request, 'edit_profile.html', {'form': form})
+
+
