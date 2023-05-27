@@ -1,0 +1,16 @@
+<!-- {% include 'post.html' with post=some_post %} -->
+
+{% load static %}
+
+<!-- Link to the CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
+
+<div class="post">
+    <h2>{{ post.text }}</h2>
+    {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.text }}">
+    {% endif %}
+    <p>Posted at: {{ post.created_at }}</p>
+</div>
+
+

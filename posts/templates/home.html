@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome to Highlight!</h1>
+
+    
+      
+    {% for post in posts %}
+        <div>
+            <p>{{ post.text }}</p>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post image">
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No posts yet.</p>
+    {% endfor %}
+{% endblock %}
+
