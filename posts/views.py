@@ -3,6 +3,12 @@ from .models import Post
 
 from .forms import PostForm
 
+from django.shortcuts import render
+from .forms import PostForm
+from .models import Post
+import itertools
+import random
+
 def home(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -13,9 +19,21 @@ def home(request):
     else:
         form = PostForm()
 
+    colors = ['yellow', 'pink', 'green', 'orange', 'blue']
+    shuffled_colors = list(itertools.islice(itertools.cycle(colors), 150))  # Adjust 150 as per your need
+    random.shuffle(shuffled_colors)
+
     posts = Post.objects.all().order_by('-created_at')
     template = 'loggedin.html' if request.user.is_authenticated else 'home.html'
-    return render(request, template, {'form': form, 'posts': posts})
+
+    context = {
+        'form': form,
+        'posts': posts,
+        'shuffled_colors': shuffled_colors,
+    }
+
+    return render(request, template, context)
+
 
 
 
@@ -110,18 +128,31 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
-
-from django.shortcuts import render
-from .models import Post
-
-def profile_view(request):
-    user = request.user
-    profile = user.profile
-    posts = Post.objects.filter(user=user).order_by('-created_at')
-    return render(request, 'profile.html', {'user': user, 'profile': profile, 'posts': posts})
-
-
 from .forms import ProfileUpdateForm
+
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404
+from .models import Profile, Post
+
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.models import User
+from .models import Profile, Post
+
+def view_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(Profile, user=user)
+    posts = Post.objects.filter(user=user)
+
+    context = {
+        'user': user,
+        'profile': profile,
+        'posts': posts,
+    }
+    
+    return render(request, 'profile.html', context)
+
+
+
 
 def edit_profile(request):
     if request.method == 'POST':

@@ -1,0 +1,7 @@
+header, footer {
+    z-index: 2; /* set above the box-container */
+    position: relative; /* set to relative to make z-index work */
+}
+
+
+

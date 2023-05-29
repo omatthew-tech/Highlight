@@ -1,12 +1,14 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
 <nav>
     <!-- Navigation links go here -->
     <a href="/">Home</a>
 
     <!-- Check if user is authenticated -->
-    {% if user.is_authenticated %}
+    {% if request.user.is_authenticated %}
         <!-- Links to show when the user is logged in -->
         <a href="{% url 'logout' %}">Logout</a>
-        <a href="{% url 'profile' %}">Profile</a>
+        <a href="{% url 'view_profile' request.user.username %}">Profile</a>
     {% else %}
         <!-- Links to show when the user is not logged in -->
         <a href="{% url 'login' %}">Login</a>
@@ -15,4 +17,6 @@
 
     <!-- Add more links as needed -->
 </nav>
+
+
 

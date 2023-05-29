@@ -2,11 +2,12 @@
 
 {% block content %}
     <h2>{{ user.username }}'s Profile</h2>
-    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
     <p>Location: {{ profile.location }}</p>
     <p>Bio: {{ profile.bio }}</p>
     <img src="{{ profile.image.url }}" alt="Profile picture">
-    
+    {% if user == request.user %}
+        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+    {% endif %}
     <h2>Posts</h2>
     {% for post in posts %}
         <div class="post">
@@ -18,4 +19,5 @@
         </div>
     {% endfor %}
 {% endblock %}
+
 
