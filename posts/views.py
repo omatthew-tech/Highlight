@@ -8,6 +8,7 @@ from .forms import PostForm
 from .models import Post
 import itertools
 import random
+from django.http import HttpResponseRedirect
 
 def home(request):
     if request.method == 'POST':
@@ -16,6 +17,7 @@ def home(request):
             post = form.save(commit=False)
             post.user = request.user
             post.save()
+            return HttpResponseRedirect(reverse('home'))  # 'home' is the name of your URL pattern
     else:
         form = PostForm()
 
@@ -154,14 +156,44 @@ def view_profile(request, username):
 
 
 
+from django.shortcuts import render, redirect
+from .forms import UserUpdateForm, ProfileUpdateForm
+from django.contrib import messages
+
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+from django.contrib import messages
+
 def edit_profile(request):
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile') # Assuming the name of the profile view is 'profile'
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, 
+                                   request.FILES, 
+                                   instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return JsonResponse({'success': True})
     else:
-        form = ProfileUpdateForm(instance=request.user.profile)
-    return render(request, 'edit_profile.html', {'form': form})
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            u_form = UserUpdateForm(instance=request.user)
+            p_form = ProfileUpdateForm(instance=request.user.profile)
+            html = render_to_string('edit_profile.html', {'user_form': u_form, 'profile_form': p_form}, request=request)
+            return JsonResponse({'form': html})
+
+        else:
+            u_form = UserUpdateForm(instance=request.user)
+            p_form = ProfileUpdateForm(instance=request.user.profile)
+            
+    context = {
+        'user_form': u_form,
+        'profile_form': p_form
+    }
+
+    return render(request, 'edit_profile.html', context)
+
+
+
 
 

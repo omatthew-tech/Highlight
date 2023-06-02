@@ -1,0 +1,38 @@
+{% load static %}
+
+{% block content %}
+    <div class="profile-info">
+        <img src="{{ profile.image.url }}" alt="Profile picture" class="profile-avatar">
+        <div class="profile-detail">
+            <h2 class="username">{{ user.username }}</h2>
+            <p class="full-name">{{ user.first_name }} {{ user.last_name }}</p>
+            <p class="profile-location">Location: {{ profile.location }}</p>
+            <p class="profile-bio">Bio: {{ profile.bio }}</p>
+        </div>
+        {% if user == request.user %}
+            <button id="editBtn" class="edit-link">Edit Profile</button>
+        {% endif %}
+    </div>
+
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div id="modal-body"> <!-- Make sure you have this id -->
+                <!-- Form content will be injected here -->
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/profile_info.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/profile_info.js' %}"></script>
+{% endblock %}
+
+
+
+

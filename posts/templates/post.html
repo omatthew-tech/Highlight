@@ -1,15 +1,45 @@
 {% load static %}
+{% load my_filters %}  <!-- Load the custom template filter -->
 
 <!-- Link to the CSS -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
 
 <div class="post">
-    <h2>{{ post.text }}</h2>
+    <div class="post-top">
+        <a href="{% url 'view_profile' post.user.username %}">
+            <img src="{{ post.user.profile.image.url }}" alt="User Avatar" class="avatar">
+        </a>
+        <div class="post-content">
+            <div class="user-detail">
+                <a href="{% url 'view_profile' post.user.username %}" class="username">{{ post.user.first_name }} {{ post.user.last_name }}</a>
+                <span class="timestamp">{{ post.created_at|custom_date }}</span>
+            </div>
+            <p class="post-text">{{ post.text }}</p>
+        </div>
+    </div>
     {% if post.image %}
-        <img src="{{ post.image.url }}" alt="{{ post.text }}">
+        <img src="{{ post.image.url }}" alt="{{ post.text }}" class="post-image">
     {% endif %}
-    <p>Posted at: {{ post.created_at }}</p>
+    <div class="interaction-icons">
+        <!-- Include the like, comment, share icons here -->
+    </div>
+    <p class="caption">{{ post.caption }}</p>
+    <div class="comments">
+        <!-- Display latest comments here -->
+    </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

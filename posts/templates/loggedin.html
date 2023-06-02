@@ -1,14 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
   <h1>Welcome back!</h1>
 
-  <h2>Create a Post:</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-  </form>
+  <!-- Link to the CSS -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+
+  <div class="post">
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.text }}
+      {{ form.image }}
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 
   <h2>Here are the posts:</h2>
 
@@ -16,4 +23,6 @@
     {% include 'post.html' with post=post %}
   {% endfor %}
 {% endblock %}
+
+
 

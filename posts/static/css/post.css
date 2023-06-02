@@ -1,0 +1,101 @@
+.post {
+    background-color: white;
+    border: 1px solid black; /* Add a black border */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Use a black shadow */
+    border-radius: 15px;
+    margin-bottom: 20px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    max-width: 90%; /* To make it responsive */
+    margin: 20px auto; /* Center the post */
+}
+
+.post-top {
+    display: flex;
+    align-items: flex-start;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.post-text {
+    color: black;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.post-image {
+    width: 100%;
+    border: 2px solid rgb(153, 230, 230);
+    margin-bottom: 15px;
+}
+
+.interaction-icons {
+    color: rgb(255, 204, 153);
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.timestamp {
+    color: #888;  /* Lighter gray color */
+    font-size: 12px;  /* Smaller font size */
+    text-align: left;  /* Align text to left */
+}
+
+.caption, .comments {
+    color: black;
+    margin-bottom: 15px;
+}
+
+.user-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.post-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.username {
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;  /* Add this line to remove underline */
+}
+
+.username:hover {
+    text-decoration: underline;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    transition: filter 0.3s; /* Optional: for smooth transition */
+}
+
+.avatar:hover {
+    filter: brightness(80%); /* Darken the image */
+}
+
+
+
+
+
+
