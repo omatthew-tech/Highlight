@@ -25,8 +25,12 @@ def home(request):
     shuffled_colors = list(itertools.islice(itertools.cycle(colors), 150))  # Adjust 150 as per your need
     random.shuffle(shuffled_colors)
 
-    posts = Post.objects.all().order_by('-created_at')
-    template = 'loggedin.html' if request.user.is_authenticated else 'home.html'
+    if request.user.is_authenticated:
+        posts = Post.objects.exclude(user=request.user).exclude(likes=request.user).order_by('-created_at')
+        template = 'loggedin.html'
+    else:
+        posts = Post.objects.all().order_by('-created_at')
+        template = 'home.html'
 
     context = {
         'form': form,
@@ -35,6 +39,8 @@ def home(request):
     }
 
     return render(request, template, context)
+
+
 
 
 
@@ -101,9 +107,7 @@ def check_email(request):
 from django.shortcuts import get_object_or_404, render
 from .models import Post
 
-def post_detail(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    return render(request, 'post.html', {'post': post})
+
 
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
@@ -178,6 +182,28 @@ def edit_profile(request):
     }
 
     return render(request, 'edit_profile.html', context)
+
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def like_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    
+
+    if post.likes.filter(id=request.user.id).exists():
+        # User has already liked this post
+        # remove like/user
+        post.likes.remove(request.user)
+        is_liked = False
+    else:
+        # User has not liked this post
+        post.likes.add(request.user)
+        is_liked = True
+    return JsonResponse({'isLiked': is_liked, 'likesCount': post.likes.count()}, safe=False)
+
+
 
 
 

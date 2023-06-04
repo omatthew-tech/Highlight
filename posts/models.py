@@ -6,6 +6,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     text = models.TextField()
     image = models.ImageField(upload_to='images/', blank=True, null=True)
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Profile(models.Model):

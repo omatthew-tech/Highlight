@@ -22,12 +22,23 @@
     {% endif %}
     <div class="interaction-icons">
         <!-- Include the like, comment, share icons here -->
+        <button class="like-button" data-id="{{ post.id }}">
+            {% if request.user in post.likes.all %}
+                Unlike
+            {% else %}
+                Like
+            {% endif %}
+        </button>
     </div>
     <p class="caption">{{ post.caption }}</p>
     <div class="comments">
         <!-- Display latest comments here -->
     </div>
 </div>
+
+<!-- Link to the JavaScript -->
+<script src="{% static 'js/post.js' %}" defer></script>
+
 
 
 
