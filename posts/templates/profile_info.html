@@ -10,16 +10,16 @@
             <p class="profile-bio">Bio: {{ profile.bio }}</p>
         </div>
         {% if user == request.user %}
-            <button id="editBtn" class="edit-link">Edit Profile</button>
+            <a href="{% url 'edit-profile' %}" id="edit-profile-button" class="button">Edit Profile</a>
         {% endif %}
+
     </div>
 
-    <div id="myModal" class="modal">
+    <div id="edit-profile-overlay" class="modal">
         <!-- Modal content -->
-        <div class="modal-content">
-            <div id="modal-body"> <!-- Make sure you have this id -->
-                <!-- Form content will be injected here -->
-            </div>
+        <div id="edit-profile-content" class="modal-content">
+            <span id="close-button">&times;</span>
+            <!-- Form content will be injected here -->
         </div>
     </div>
     
@@ -31,7 +31,9 @@
 
 {% block extra_js %}
   <script src="{% static 'js/profile_info.js' %}"></script>
+  <script src="{% static 'js/edit_profile.js' %}"></script>
 {% endblock %}
+
 
 
 

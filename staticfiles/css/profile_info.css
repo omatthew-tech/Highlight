@@ -10,7 +10,6 @@
     margin: 20px auto; /* Center the post */
     display: flex;
     align-items: center;
-    width: 730px;
 }
 
 .profile-info .profile-avatar {
@@ -47,10 +46,4 @@
     color: black;
     font-size: 18px;
 }
-
-
-
-
-
-
 

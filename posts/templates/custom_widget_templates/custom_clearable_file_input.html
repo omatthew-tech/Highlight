@@ -1,0 +1,6 @@
+{% if is_initial %}
+    <input type="file" name="{{ widget.name }}"/>
+{% else %}
+    <input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+{% endif %}
+

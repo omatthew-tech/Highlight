@@ -70,8 +70,16 @@ class PostForm(forms.ModelForm):
 
 
 
-from django.contrib.auth.models import User
-from django import forms
+from django.forms.widgets import ClearableFileInput
+from django.utils.html import escape, conditional_escape
+from django.utils.encoding import force_str
+from django.forms.utils import flatatt
+from django.utils.safestring import mark_safe
+
+class CustomClearableFileInput(ClearableFileInput):
+    template_name = 'custom_widget_templates/custom_clearable_file_input.html'
+
+
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
@@ -79,9 +87,11 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['first_name', 'last_name']
 
 class ProfileUpdateForm(forms.ModelForm):
+    image = forms.ImageField(widget=CustomClearableFileInput)
     class Meta:
         model = Profile
         fields = ['image', 'location', 'bio']
+
 
 
 

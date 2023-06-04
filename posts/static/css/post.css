@@ -8,6 +8,7 @@
     font-family: Arial, sans-serif;
     max-width: 90%; /* To make it responsive */
     margin: 20px auto; /* Center the post */
+    width: 730px;
 }
 
 .post-top {
