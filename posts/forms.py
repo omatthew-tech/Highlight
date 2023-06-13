@@ -92,6 +92,8 @@ class ProfileUpdateForm(forms.ModelForm):
         model = Profile
         fields = ['image', 'location', 'bio']
 
+class UserSearchForm(forms.Form):
+    query = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Search...'}))
 
 
 

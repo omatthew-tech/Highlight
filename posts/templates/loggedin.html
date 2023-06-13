@@ -20,7 +20,8 @@
   <h2>Here are the posts:</h2>
 
   {% for post in posts %}
-    {% include 'post.html' with post=post %}
+  {% include 'post.html' with post=post show_like_button=True %}
+
   {% endfor %}
 {% endblock %}
 

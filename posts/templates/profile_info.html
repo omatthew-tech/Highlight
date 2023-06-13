@@ -1,38 +1,29 @@
 {% load static %}
 
-{% block content %}
-    <div class="profile-info">
-        <img src="{{ profile.image.url }}" alt="Profile picture" class="profile-avatar">
-        <div class="profile-detail">
-            <h2 class="username">{{ user.username }}</h2>
-            <p class="full-name">{{ user.first_name }} {{ user.last_name }}</p>
-            <p class="profile-location">Location: {{ profile.location }}</p>
-            <p class="profile-bio">Bio: {{ profile.bio }}</p>
-        </div>
-        {% if user == request.user %}
-            <a href="{% url 'edit-profile' %}" id="edit-profile-button" class="button">Edit Profile</a>
-        {% endif %}
-
+<div class="profile-info">
+    <img src="{{ profile.image.url }}" alt="Profile picture" class="profile-avatar">
+    <div class="profile-detail">
+        <h2 class="username">{{ profile_user.username }}</h2>
+        <p class="full-name">{{ profile_user.first_name }} {{ profile_user.last_name }}</p>
+        <p class="profile-location">Location: {{ profile_user.profile.location }}</p>
+        <p class="profile-bio">Bio: {{ profile_user.profile.bio }}</p>
     </div>
+    {% if profile_user == request.user %}
+    <a href="{% url 'edit-profile' %}" id="edit-profile-button" class="button">Edit Profile</a>
+    {% else %}
+        <button class="friend-request-button" id="friend-request-button-{{ profile_user.id }}" data-user-id="{{ profile_user.id }}">
+            Send Friend Request
+        </button>
+    {% endif %}
 
-    <div id="edit-profile-overlay" class="modal">
-        <!-- Modal content -->
-        <div id="edit-profile-content" class="modal-content">
-            <span id="close-button">&times;</span>
-            <!-- Form content will be injected here -->
-        </div>
-    </div>
-    
-{% endblock %}
+</div>
 
 {% block extra_css %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/profile_info.css' %}">
 {% endblock %}
 
-{% block extra_js %}
-  <script src="{% static 'js/profile_info.js' %}"></script>
-  <script src="{% static 'js/edit_profile.js' %}"></script>
-{% endblock %}
+
+
 
 
 

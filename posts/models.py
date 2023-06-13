@@ -14,4 +14,21 @@ class Profile(models.Model):
     image = models.ImageField(upload_to='profile_pics/', default='profile_pics/ProfilePic.jpg', blank=True)
     location = models.CharField(max_length=30, blank=True)
     bio = models.TextField(blank=True)
+    friends = models.ManyToManyField('self', blank=True)
+
+    def are_friends(self, user):
+        return user in self.friends.all()
+
+class FriendRequest(models.Model):
+    from_user = models.ForeignKey(User, related_name='outgoing_friend_requests', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, related_name='incoming_friend_requests', on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)  # time of creation
+    status = models.IntegerField(choices=(
+        (0, 'Pending'),
+        (1, 'Accepted'),
+        (2, 'Declined'),
+    ), default=0)
+
+    class Meta:
+        unique_together = ('from_user', 'to_user')
 

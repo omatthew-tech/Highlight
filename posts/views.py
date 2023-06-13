@@ -40,13 +40,6 @@ def home(request):
 
     return render(request, template, context)
 
-
-
-
-
-
-
-
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, ProfileForm
 
@@ -145,15 +138,14 @@ from django.contrib.auth.models import User
 from .models import Profile, Post
 
 def view_profile(request, username):
-    user = get_object_or_404(User, username=username)
-    profile = get_object_or_404(Profile, user=user)
-    posts = Post.objects.filter(user=user)
+    profile_user = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(user=profile_user)
 
     context = {
-        'user': user,
-        'profile': profile,
-        'posts': posts,
-    }
+    'profile_user': profile_user,
+    'posts': posts,
+}
+
     
     return render(request, 'profile.html', context)
 
@@ -202,6 +194,80 @@ def like_post(request, post_id):
         post.likes.add(request.user)
         is_liked = True
     return JsonResponse({'isLiked': is_liked, 'likesCount': post.likes.count()}, safe=False)
+
+
+from .forms import UserSearchForm
+from django.db.models import Q
+from django.http import JsonResponse
+from django.db.models import Q, Value as V
+from django.db.models.functions import Concat
+from django.conf import settings
+
+def search(request):
+    query = request.GET.get('query')
+    if query:
+        results = User.objects.annotate(
+            full_name=Concat('first_name', V(' '), 'last_name'),
+            full_name_reversed=Concat('last_name', V(' '), 'first_name')
+        ).filter(
+            Q(username__icontains=query) |
+            Q(first_name__icontains=query) |
+            Q(last_name__icontains=query) |
+            Q(full_name__icontains=query) |
+            Q(full_name_reversed__icontains=query)
+        )
+        results = results.values('username', 'first_name', 'last_name', 'profile__image')
+        results = [
+            {
+                **user,
+                'profile__image': request.build_absolute_uri(settings.MEDIA_URL + user['profile__image']) 
+                                if user['profile__image'] is not None else None
+            }
+            for user in results
+]
+
+    else:
+        results = User.objects.none()
+
+    return JsonResponse(list(results), safe=False)
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Profile, FriendRequest
+
+@login_required
+def send_friend_request(request, user_id):
+    if request.user.id == user_id:
+        messages.error(request, "You can't send a friend request to yourself!")
+    else:
+        to_user = get_object_or_404(User, pk=user_id)
+        friend_request, created = FriendRequest.objects.get_or_create(
+            from_user=request.user,
+            to_user=to_user)
+        if created:
+            messages.success(request, f'Friend request sent to {to_user.username}!')
+        else:
+            messages.success(request, f'Friend request was already sent to {to_user.username}!')
+    return redirect('view_profile', username=to_user.username)
+
+@login_required
+def view_friend_requests(request):
+    incoming_requests = request.user.incoming_friend_requests.filter(status=0)
+    return render(request, 'friend_requests.html', {'friend_requests': incoming_requests})
+
+@login_required
+def check_friendship(request, other_user_id):
+    if request.user.id == other_user_id:
+        return JsonResponse({'status': 'error', 'message': "You can't be friends with yourself!"})
+    else:
+        other_user = get_object_or_404(User, pk=other_user_id)
+        if request.user.profile.are_friends(other_user):
+            return JsonResponse({'status': 'friends'})
+        else:
+            return JsonResponse({'status': 'not_friends'})
+
+
 
 
 
