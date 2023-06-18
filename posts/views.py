@@ -140,14 +140,23 @@ from .models import Profile, Post
 def view_profile(request, username):
     profile_user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(user=profile_user)
+    are_friends = request.user.profile.friends.filter(user=profile_user).exists()
+    
+    friend_request_sent = FriendRequest.objects.filter(
+        from_profile=request.user.profile, 
+        to_profile=Profile.objects.get(user=profile_user),
+        status='pending'
+    ).exists()
 
     context = {
-    'profile_user': profile_user,
-    'posts': posts,
-}
+        'profile_user': profile_user,
+        'posts': posts,
+        'are_friends': are_friends,
+        'friend_request_sent': friend_request_sent,  # add this line
+    }
 
-    
     return render(request, 'profile.html', context)
+
 
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -231,41 +240,77 @@ def search(request):
 
     return JsonResponse(list(results), safe=False)
 
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib import messages
 from .models import Profile, FriendRequest
 
 @login_required
-def send_friend_request(request, user_id):
-    if request.user.id == user_id:
-        messages.error(request, "You can't send a friend request to yourself!")
-    else:
-        to_user = get_object_or_404(User, pk=user_id)
+def send_friend_request(request, username):
+    if request.method == 'POST':
+        to_user = get_object_or_404(User, username=username)
+        to_profile = get_object_or_404(Profile, user=to_user)
+        from_profile = Profile.objects.get(user=request.user)
         friend_request, created = FriendRequest.objects.get_or_create(
-            from_user=request.user,
-            to_user=to_user)
+            from_profile=from_profile,
+            to_profile=to_profile)
         if created:
-            messages.success(request, f'Friend request sent to {to_user.username}!')
+            return JsonResponse({'status': 'Friend request sent.'}, status=200)
         else:
-            messages.success(request, f'Friend request was already sent to {to_user.username}!')
-    return redirect('view_profile', username=to_user.username)
+            return JsonResponse({'status': 'Friend request already sent.'}, status=200)
+    else:
+        return JsonResponse({'status': 'Not a POST request.'}, status=400)
+
+
+@login_required
+def accept_friend_request(request, request_id):
+    if request.method == 'POST':
+        friend_request = get_object_or_404(FriendRequest, id=request_id)
+        if friend_request.to_profile.user == request.user:
+            friend_request.to_profile.add_friend(friend_request.from_profile)
+            friend_request.status = 'accepted'
+            friend_request.save()
+            return JsonResponse({'status': 'Friend request accepted.'}, status=200)
+        else:
+            return JsonResponse({'status': 'Not your request to accept.'}, status=400)
+    else:
+        return JsonResponse({'status': 'Not a POST request.'}, status=400)
 
 @login_required
 def view_friend_requests(request):
-    incoming_requests = request.user.incoming_friend_requests.filter(status=0)
-    return render(request, 'friend_requests.html', {'friend_requests': incoming_requests})
+    # Get all friend requests where the current user is the target
+    friend_requests = FriendRequest.objects.filter(to_profile=request.user.profile, status='pending')
+    return render(request, 'friend_requests.html', {'friend_requests': friend_requests})
+
 
 @login_required
-def check_friendship(request, other_user_id):
-    if request.user.id == other_user_id:
-        return JsonResponse({'status': 'error', 'message': "You can't be friends with yourself!"})
-    else:
-        other_user = get_object_or_404(User, pk=other_user_id)
-        if request.user.profile.are_friends(other_user):
-            return JsonResponse({'status': 'friends'})
+def respond_friend_request(request, request_id, action):
+    friend_request = get_object_or_404(FriendRequest, id=request_id)
+
+    if action == 'accept':
+        if friend_request.to_profile == request.user.profile:
+            # add the friend to profile
+            friend_request.to_profile.friends.add(friend_request.from_profile) 
+            friend_request.status = 'accepted'  # Accepted
+            friend_request.save()
+            messages.success(request, f"You are now friends with {friend_request.from_profile.user.username}!")
+            return JsonResponse({'success': True})
         else:
-            return JsonResponse({'status': 'not_friends'})
+            return JsonResponse({'success': False, 'message': "This friend request doesn't belong to you."})
+
+    elif action == 'decline':
+        if friend_request.to_profile == request.user.profile:
+            friend_request.status = 'rejected'  # Declined
+            friend_request.save()
+            messages.success(request, f"You declined the friend request from {friend_request.from_profile.user.username}.")
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'message': "This friend request doesn't belong to you."})
+
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid action.'})
+
+
+
 
 
 

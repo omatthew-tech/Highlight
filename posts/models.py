@@ -14,21 +14,22 @@ class Profile(models.Model):
     image = models.ImageField(upload_to='profile_pics/', default='profile_pics/ProfilePic.jpg', blank=True)
     location = models.CharField(max_length=30, blank=True)
     bio = models.TextField(blank=True)
-    friends = models.ManyToManyField('self', blank=True)
+    friends = models.ManyToManyField("self")
 
-    def are_friends(self, user):
-        return user in self.friends.all()
+    def friend_requests(self):
+        return self.to_friend.filter(status='pending')
+
+    def add_friend(self, profile):
+        self.friends.add(profile)
 
 class FriendRequest(models.Model):
-    from_user = models.ForeignKey(User, related_name='outgoing_friend_requests', on_delete=models.CASCADE)
-    to_user = models.ForeignKey(User, related_name='incoming_friend_requests', on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)  # time of creation
-    status = models.IntegerField(choices=(
-        (0, 'Pending'),
-        (1, 'Accepted'),
-        (2, 'Declined'),
-    ), default=0)
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    )
 
-    class Meta:
-        unique_together = ('from_user', 'to_user')
+    from_profile = models.ForeignKey(Profile, related_name='from_friends', on_delete=models.CASCADE)
+    to_profile = models.ForeignKey(Profile, related_name='to_friends', on_delete=models.CASCADE)
+    status = models.CharField(choices=STATUS_CHOICES, max_length=10, default='pending')
 

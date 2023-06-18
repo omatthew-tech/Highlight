@@ -1,5 +1,12 @@
 console.log("Navbar.js loaded");
 
+const hamburgerMenu = document.querySelector('.hamburger-menu');
+const navbarLinks = document.querySelector('.navbar-links');
+
+hamburgerMenu.addEventListener('click', () => {
+    navbarLinks.classList.toggle('navbar-active');
+});
+
 document.querySelector('#search-input').addEventListener('input', function() {
 
     const query = this.value;
@@ -59,6 +66,8 @@ document.querySelector('#search-input').addEventListener('input', function() {
         });
     });
 });
+
+
 
 
 

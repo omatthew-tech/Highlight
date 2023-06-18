@@ -3,7 +3,8 @@
 
 
 {% block content %}
-{% include 'profile_info.html' with profile=profile_user.profile user=profile_user %}
+{% include 'profile_info.html' with profile=profile_user.profile user=profile_user are_friends=are_friends %}
+
 
     <h2>Posts</h2>
     {% for post in posts %}

@@ -1,19 +1,22 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<h1>Friend Requests</h1>
-
-{% for friend_request in friend_requests %}
-    <div class="friend-request">
-        <p>
-            {{ friend_request.from_user.username }} wants to be friends.
-            <a href="{% url 'accept_friend_request' friend_request.id %}">Accept</a>
-            |
-            <a href="{% url 'decline_friend_request' friend_request.id %}">Decline</a>
-        </p>
+  <h2>Friend Requests</h2>
+  {% for friend_request in friend_requests %}
+    <div class="friend-request" id="friend-request-{{ friend_request.id }}">
+      <p>{{ friend_request.from_profile.user.username }} wants to be your friend.</p>
+      <button onclick="handleFriendRequestResponse('{{ friend_request.id }}', 'accept')">Accept</button>
+      <button onclick="handleFriendRequestResponse('{{ friend_request.id }}', 'decline')">Decline</button>
     </div>
-{% empty %}
-    <p>No friend requests.</p>
-{% endfor %}
-
+  {% empty %}
+    <p>You have no friend requests.</p>
+  {% endfor %}
 {% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/profile_info.js' %}"></script>
+{% endblock %}
+
+
+

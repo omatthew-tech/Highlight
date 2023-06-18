@@ -66,7 +66,7 @@ class PostForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['text'].widget = forms.Textarea(attrs={'placeholder': 'What\'s the highlight of your week?'})
+        self.fields['text'].widget = forms.Textarea(attrs={'placeholder': 'What\'s your weekly highlight?'})
 
 
 

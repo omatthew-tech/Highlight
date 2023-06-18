@@ -1,4 +1,7 @@
 {% load static %}
+{% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/profile_info.css' %}">
+{% endblock %}
 
 <div class="profile-info">
     <img src="{{ profile.image.url }}" alt="Profile picture" class="profile-avatar">
@@ -11,16 +14,27 @@
     {% if profile_user == request.user %}
     <a href="{% url 'edit-profile' %}" id="edit-profile-button" class="button">Edit Profile</a>
     {% else %}
-        <button class="friend-request-button" id="friend-request-button-{{ profile_user.id }}" data-user-id="{{ profile_user.id }}">
-            Send Friend Request
-        </button>
+    {% if are_friends %}
+        <p>You are friends</p>
+    {% else %}
+        {% if friend_request_sent %}
+            <button id="friend-request-button-{{ profile_user.username }}" disabled>Pending</button>
+        {% else %}
+            <button id="friend-request-button-{{ profile_user.username }}">Send Friend Request</button>
+        {% endif %}
     {% endif %}
+{% endif %}
+
+
 
 </div>
 
-{% block extra_css %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/profile_info.css' %}">
+
+
+{% block extra_js %}
+    <script src="{% static 'js/profile_info.js' %}"></script>
 {% endblock %}
+
 
 
 

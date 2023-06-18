@@ -1,30 +1,53 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
-<nav>
-    <!-- Navigation links go here -->
-    <a href="/">Home</a>
 
-    <!-- Check if user is authenticated -->
-    {% if request.user.is_authenticated %}
-        <!-- Links to show when the user is logged in -->
-        <a href="{% url 'logout' %}">Logout</a>
-        <a href="{% url 'view_profile' request.user.username %}">Profile</a>
-        <div id="search">
+<nav>
+    <!-- Add the "highlight" text/icon here -->
+    <div class="nav-icon">
+        <span>highlight</span>
+    </div>
+
+    <div id="search" class="search">
+        <!-- Make the search bar visible only if the user is authenticated -->
+        {% if request.user.is_authenticated %}
             <input id="search-input" type="text" placeholder="Search users..." autocomplete="off">
             <div id="search-results"></div>
-        </div>
+        {% endif %}
+    </div>
 
+    <!-- Hamburger menu is only visible if the user is authenticated -->
+    {% if request.user.is_authenticated %}
+        <div class="hamburger-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     {% else %}
-        <!-- Links to show when the user is not logged in -->
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Sign up</a>
+        <div class="auth-buttons">
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Sign up</a>
+        </div>
     {% endif %}
 
-    <!-- Add more links as needed -->
+    <div class="navbar-links" id="navbar-links">
+        <!-- Navigation links go here -->
+
+        <!-- Check if user is authenticated -->
+        {% if request.user.is_authenticated %}
+            <!-- Links to show when the user is logged in -->
+            <a href="{% url 'view_profile' request.user.username %}">Profile</a>
+            <a href="{% url 'view_friend_requests' %}">Friend Requests</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% endif %}
+    </div>
 </nav>
 
 <!-- Load the navbar.js -->
 <script src="{% static 'js/navbar.js' %}" defer></script>
+
+
+
+
 
 
 
