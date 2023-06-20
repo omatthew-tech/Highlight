@@ -21,6 +21,13 @@ nav {
     align-items: center;
 }
 
+.nav-icon img {
+    /* adjust as needed */
+    width: 60px;
+    height: auto;
+}
+
+
 #search {
     /* Center alignment */
     position: absolute;
