@@ -1,25 +1,36 @@
 from django.shortcuts import render
 from .models import Post
 
-from .forms import PostForm
-
 from django.shortcuts import render
-from .forms import PostForm
-from .models import Post
-import itertools
-import random
 from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.utils import timezone
+from datetime import timedelta
+import random
+import itertools
+from .models import Post
+from .forms import PostForm
+from django.contrib import messages  # Don't forget to import messages
 
 def home(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.user = request.user
-            post.save()
-            return HttpResponseRedirect(reverse('home'))  # 'home' is the name of your URL pattern
-    else:
-        form = PostForm()
+    can_post = True
+    form = PostForm()
+
+    if request.user.is_authenticated:
+        if Post.objects.filter(user=request.user, created_at__gte=timezone.now()-timedelta(weeks=1)).exists():
+            can_post = False
+
+        if request.method == 'POST':
+            if can_post:
+                form = PostForm(request.POST)
+                if form.is_valid():
+                    post = form.save(commit=False)
+                    post.user = request.user
+                    post.save()
+                    messages.info(request, "You have successfully posted. You can post again next Sunday at 3:00 PM EST.")
+                    return HttpResponseRedirect(reverse('home'))  # 'home' is the name of your URL pattern
+            else:
+                messages.info(request, "You have already made a post this week. New post form will be available next Sunday at 3:00 PM EST.")
 
     colors = ['yellow', 'pink', 'green', 'orange', 'blue']
     shuffled_colors = list(itertools.islice(itertools.cycle(colors), 150))  # Adjust 150 as per your need
@@ -36,9 +47,12 @@ def home(request):
         'form': form,
         'posts': posts,
         'shuffled_colors': shuffled_colors,
+        'can_post': can_post,
     }
 
     return render(request, template, context)
+
+
 
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, ProfileForm

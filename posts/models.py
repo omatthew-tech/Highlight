@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
@@ -15,6 +16,7 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True)
     bio = models.TextField(blank=True)
     friends = models.ManyToManyField("self")
+    last_post_time = models.DateTimeField(default=timezone.now)
 
     def friend_requests(self):
         return self.to_friend.filter(status='pending')
