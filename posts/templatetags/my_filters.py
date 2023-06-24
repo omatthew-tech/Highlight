@@ -17,3 +17,12 @@ def custom_date(value):
         return str(diff.days) + " days ago"
     else:
         return value.strftime("%B %d, %Y")  # If more than a week ago, return a formatted date
+
+# In your_app/templatetags/your_app_filters.py
+from django import template
+
+register = template.Library()
+
+@register.filter
+def times(number):
+    return range(number)

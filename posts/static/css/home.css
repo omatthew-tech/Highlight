@@ -2,7 +2,7 @@ html, body {
     height: 100vh;
     margin: 0;
     background-color: white;
-    overflow: hidden;  /* This line prevents scrolling */
+    overflow: hidden;
 }
 
 body > div.content-wrapper {
@@ -27,11 +27,22 @@ body > div.content-wrapper {
     z-index: 1;
 }
 
-.row {
-    flex-grow: 1;
-    background: linear-gradient(to right, yellow 50%, white 50%);
+.row-right, .row-left {
+    height: calc(100% / 18);
+    box-sizing: border-box; 
+    background: white;
+}
+
+.row-right {
+    background: linear-gradient(270deg, white 50%, yellow 50%);
     background-size: 200% 100%;
     background-position: right;
+}
+
+.row-left {
+    background: linear-gradient(90deg, white 50%, yellow 50%);
+    background-size: 200% 100%;
+    background-position: left;
 }
 
 .content {
@@ -42,13 +53,38 @@ body > div.content-wrapper {
     text-align: center;
 }
 
-@keyframes highlight {
+@keyframes sweep-right {
+    0% { background-position: right; }
     100% { background-position: left; }
 }
 
-.highlight {
-    animation: highlight 2s forwards;
+@keyframes sweep-left {
+    0% { background-position: left; }
+    100% { background-position: right; }
 }
+
+.sweep-right {
+    animation: sweep-right 2s forwards;
+}
+
+.sweep-left {
+    animation: sweep-left 2s forwards;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
