@@ -21,8 +21,6 @@ def custom_date(value):
 # In your_app/templatetags/your_app_filters.py
 from django import template
 
-register = template.Library()
-
 @register.filter
 def times(number):
     return range(number)
