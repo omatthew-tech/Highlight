@@ -1,52 +1,150 @@
-var modal = document.getElementById('myModal');
-
-document.getElementById('editBtn').addEventListener('click', function (event) {
-    event.preventDefault();
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var data = JSON.parse(this.responseText);
-            document.querySelector('#myModal #modal-body').innerHTML = data.form;
-            modal.style.display = 'block'; // I've also replaced document.getElementById('myModal') with modal here
-
-            // The form now exists, so attach the event listener to it
-            var form = document.querySelector('#myModal form');
-            form.addEventListener('submit', function(event) {
-                console.log('Form submitted');
-                event.preventDefault();
-
-                var formData = new FormData(form);
-                console.log(formData);
-
-                var request = new XMLHttpRequest();
-                request.open('POST', '/profile/edit', true);
-                request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-                request.setRequestHeader('X-CSRFToken', form.querySelector('[name=csrfmiddlewaretoken]').value);
-
-                request.onload = function() {
-                    if (this.status == 200) {
-                        // Form was processed successfully, hide the modal and reload the page
-                        modal.style.display = 'none'; // This is where you got the error before
-                        location.reload();
-                    } else {
-                        // Error processing form, display an error message
-                        console.error('Form processing error:', this.responseText);
-                    }
-                };
-
-                request.onerror = function() {
-                    // There was a connection error of some sort
-                    console.error('Connection error');
-                };
-
-                request.send(formData);
+// When the page loads, attach an event listener to the friend request button
+window.onload = function() {
+    const usernameElement = document.querySelector('.username');
+    if (usernameElement) {
+        const username = usernameElement.innerText;
+        const button = document.getElementById('friend-request-button-' + username);
+        if (button) {
+            button.addEventListener('click', () => {
+                handleFriendRequest(username);
             });
         }
-    };
-    httpRequest.open('GET', '/profile/edit', true);
-    httpRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    httpRequest.send();
-});
+    }
+};
+
+
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+let csrftoken = getCookie('csrftoken');
+
+function handleFriendRequest(username) {
+    let button = document.getElementById('friend-request-button-' + username);
+
+    // disable the button and change the text while the request is being sent
+    button.disabled = true;
+    button.innerText = 'Sending...';
+
+    // Send the POST request
+    fetch(`/send_friend_request/${username}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // handle the response
+        if (data.status === 'Friend request sent.' || data.status === 'Friend request already sent.') {
+            button.innerText = 'Friend request sent';
+            button.disabled = true;
+        } else {
+            button.innerText = 'Error';
+            button.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        button.innerText = 'Error';
+        button.disabled = false;
+    });
+}
+
+
+
+function handleFriendRequest(username) {
+    let button = document.getElementById('friend-request-button-' + username);
+
+    // disable the button and change the text while the request is being sent
+    button.disabled = true;
+    button.innerText = 'Sending...';
+
+    // Send the POST request
+    fetch(`/send_friend_request/${username}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // handle the response
+        if (data.status === 'Friend request sent.' || data.status === 'Friend request already sent.') {
+            button.innerText = 'Pending';
+            button.disabled = true;
+        } else {
+            button.innerText = 'Send Friend Request';
+            button.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        button.innerText = 'Send Friend Request';
+        button.disabled = false;
+    });
+}
+
+function handleFriendRequestResponse(requestId, action) {
+    // Send the POST request
+    fetch(`/respond_friend_request/${requestId}/${action}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // handle the response
+        if (data.success) {
+            let requestElement = document.getElementById('friend-request-' + requestId);
+            requestElement.remove();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
