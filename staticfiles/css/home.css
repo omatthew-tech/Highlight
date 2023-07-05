@@ -72,7 +72,16 @@ body > div.content-wrapper {
 }
 
 /* Default style for larger screens */
+h1 {
+    font-size: 60px;
+}
 
+/* Style for screens with max-width of 600px */
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 40px;
+    }
+}
 
 
 

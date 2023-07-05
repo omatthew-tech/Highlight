@@ -12,13 +12,4 @@ body {
   font-family: Arial, sans-serif;
 }
 
-h1 {
-    font-size: 60px;
-}
 
-/* Style for screens with max-width of 600px (typical smartphone screen size) */
-@media screen and (max-width: 600px) {
-    h1 {
-        font-size: 40px;
-    }
-}
