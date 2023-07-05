@@ -3,39 +3,35 @@
 {% load static %}
 
 {% block content %}
-  <h2>Register</h2>
+  <div class="form-container">
+    <h2>Register</h2>
+    <form method="post" enctype="multipart/form-data" id="signupForm" class="signup-form">
+      {% csrf_token %}
+      <div id="page1" class="signupPage">
+        <p><input type="email" name="email" id="email" required placeholder="Email"></p><p id="error-email"></p>
+        <p><input type="password" name="password1" id="password1" required placeholder="Password"></p>
+        <p id="error-password"></p>
+        <p><input type="password" name="password2" id="password2" required placeholder="Confirm Password"></p>
+        <p id="error-password2"></p>
+        <button type="button" id="next1" class="btn-submit">Next</button>
+      </div>
 
-  <form method="post" enctype="multipart/form-data" id="signupForm">
-    {% csrf_token %}
-    <div id="page1" class="signupPage">
-      <p>Email: <input type="email" name="email" id="email" required></p><p id="error-email"></p>
-      
-      <p>Password: <input type="password" name="password1" id="password1" required></p>
-      <p id="error-password"></p>
-      <p>Confirm Password: <input type="password" name="password2" id="password2" required></p>
-      <p id="error-password2"></p>
+      <div id="page2" class="signupPage" style="display: none;">
+        <p><input type="text" name="username" id="username" placeholder="Username (Optional)"></p><p id="error-username"></p>
+        <button type="button" id="next2" class="btn-submit">Next</button>
+      </div>
 
-      <button type="button" id="next1">Next</button>
-    </div>
+      <div id="page3" class="signupPage" style="display: none;">
+        <p><input type="text" name="first_name" id="first_name" placeholder="First Name"></p><p id="error-first_name"></p>
+        <p><input type="text" name="last_name" id="last_name" placeholder="Last Name"></p><p id="error-last_name"></p>
+        <p>Image: {{ p_form.image }}</p><p id="error-image"></p>
+        <p>Location: {{ p_form.location }}</p><p id="error-location"></p>
+        <p>Bio: {{ p_form.bio }}</p><p id="error-bio"></p>
+        <button type="submit" id="submit" class="btn-submit">Submit</button>
+      </div>
 
-    <div id="page2" class="signupPage" style="display: none;">
-      <p>Username (Optional): {{ u_form.username }}</p><p id="error-username"></p>
-      <button type="button" id="next2">Next</button>
-    </div>
-
-    <div id="page3" class="signupPage" style="display: none;">
-      <p>First Name: <input type="text" name="first_name" id="first_name"></p><p id="error-first_name"></p>
-      <p>Last Name: <input type="text" name="last_name" id="last_name"></p><p id="error-last_name"></p>
-      <p>Image: {{ p_form.image }}</p><p id="error-image"></p>
-      <p>Location: {{ p_form.location }}</p><p id="error-location"></p>
-      <p>Bio: {{ p_form.bio }}</p><p id="error-bio"></p>
-      <button type="submit" id="submit">Submit</button>
-    </div>
-
-  </form>
-
-  <!-- Removed the modal-related JavaScript code -->
-
+    </form>
+  </div>
   <script>
     window.onload = function() {
   
@@ -151,24 +147,12 @@
       });
     };
   </script>
-  
-
 {% endblock %}
 
 {% block extra_css %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
-  <style>
-    #error-email,
-    #error-password,
-    #error-password2,
-    #error-username,
-    #error-image,
-    #error-location,
-    #error-bio {
-      color: red;
-    }
-  </style>
 {% endblock %}
+
 
 
 
