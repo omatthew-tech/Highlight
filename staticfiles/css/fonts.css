@@ -1,0 +1,24 @@
+/* fonts.css */
+
+/* Comfortaa font for large text */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Comfortaa', sans-serif;
+}
+
+/* Arial, sans-serif font for small text */
+.small-text {
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+    font-size: 60px;
+}
+
+/* Style for screens with max-width of 600px (typical smartphone screen size) */
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 40px;
+    }
+}

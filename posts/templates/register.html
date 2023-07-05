@@ -5,179 +5,153 @@
 {% block content %}
   <h2>Register</h2>
 
-  <button id="registerButton">Register</button>
+  <form method="post" enctype="multipart/form-data" id="signupForm">
+    {% csrf_token %}
+    <div id="page1" class="signupPage">
+      <p>Email: <input type="email" name="email" id="email" required></p><p id="error-email"></p>
+      
+      <p>Password: <input type="password" name="password1" id="password1" required></p>
+      <p id="error-password"></p>
+      <p>Confirm Password: <input type="password" name="password2" id="password2" required></p>
+      <p id="error-password2"></p>
 
-  <div id="modal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-
-      <form method="post" enctype="multipart/form-data" id="signupForm">
-        {% csrf_token %}
-
-        <div id="page1" class="signupPage">
-          <p>Email: <input type="email" name="email" id="email" oninput="checkEmail()" required></p><p id="error-email"></p>
-          
-          <p>Password: <input type="password" name="password1" id="password1" required></p>
-          <p id="error-password"></p>
-          <p>Confirm Password: <input type="password" name="password2" id="password2" required></p>
-          <p id="error-password2"></p>
-
-          <button type="button" id="next1">Next</button>
-        </div>
-
-        <div id="page2" class="signupPage" style="display: none;">
-          <p>Username (Optional): {{ u_form.username }}</p><p id="error-username"></p>
-          <button type="button" id="next2">Next</button>
-        </div>
-
-        <div id="page3" class="signupPage" style="display: none;">
-          <p>First Name: <input type="text" name="first_name" id="first_name"></p><p id="error-first_name"></p>
-    <p>Last Name: <input type="text" name="last_name" id="last_name"></p><p id="error-last_name"></p>
-          <p>Image: {{ p_form.image }}</p><p id="error-image"></p>
-          <p>Location: {{ p_form.location }}</p><p id="error-location"></p>
-          <p>Bio: {{ p_form.bio }}</p><p id="error-bio"></p>
-          <button type="submit" id="submit">Submit</button>
-        </div>
-
-      </form>
+      <button type="button" id="next1">Next</button>
     </div>
-  </div>
+
+    <div id="page2" class="signupPage" style="display: none;">
+      <p>Username (Optional): {{ u_form.username }}</p><p id="error-username"></p>
+      <button type="button" id="next2">Next</button>
+    </div>
+
+    <div id="page3" class="signupPage" style="display: none;">
+      <p>First Name: <input type="text" name="first_name" id="first_name"></p><p id="error-first_name"></p>
+      <p>Last Name: <input type="text" name="last_name" id="last_name"></p><p id="error-last_name"></p>
+      <p>Image: {{ p_form.image }}</p><p id="error-image"></p>
+      <p>Location: {{ p_form.location }}</p><p id="error-location"></p>
+      <p>Bio: {{ p_form.bio }}</p><p id="error-bio"></p>
+      <button type="submit" id="submit">Submit</button>
+    </div>
+
+  </form>
+
+  <!-- Removed the modal-related JavaScript code -->
 
   <script>
-    var modal = document.getElementById('modal');
-    var btn = document.getElementById("registerButton");
-    var span = document.getElementsByClassName("close-button")[0];
-
-    btn.onclick = function() {
-      modal.style.display = "block";
-    }
-
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
+    window.onload = function() {
+  
+      function nextPage(pageNumber) {
+        var pages = document.getElementsByClassName('signupPage');
+        for(var i=0; i<pages.length; i++){
+            pages[i].style.display = "none";
+        }
+        document.getElementById('page' + pageNumber).style.display = "block";
       }
-    }
-
-    function nextPage(pageNumber) {
-      var pages = document.getElementsByClassName('signupPage');
-      for(var i=0; i<pages.length; i++){
-          pages[i].style.display = "none";
-      }
-      document.getElementById('page' + pageNumber).style.display = "block";
-    }
-
-    document.getElementById("next1").addEventListener('click', function(event) {
-    event.preventDefault();
-    var email = document.getElementsByName('email')[0].value;
-    var password1 = document.getElementsByName('password1')[0].value;
-    var password2 = document.getElementsByName('password2')[0].value;
-
-    var errorEmail = document.getElementById('error-email');
-    var errorPassword = document.getElementById('error-password');
-    var errorPassword2 = document.getElementById('error-password2');
-
-    // Check if email is empty
-    if (!email) {
-        errorEmail.innerText = 'This field is required.';
-        return;
-    }
-
-    // Check if email is valid
-    var re = /\S+@\S+\.\S+/;
-    if (!re.test(email)) {
-        errorEmail.innerText = 'Please enter a valid email.';
-        return;
-    }
-
-    // Check if email already exists
-    fetch('/check_email/?email=' + email)
-    .then(response => response.json())
-    .then(data => {
-        if (data.is_taken) {
-            errorEmail.innerText = 'This email is already registered.';
+  
+      document.getElementById("next1").addEventListener('click', function(event) {
+        event.preventDefault();
+        var email = document.getElementsByName('email')[0].value;
+        var password1 = document.getElementsByName('password1')[0].value;
+        var password2 = document.getElementsByName('password2')[0].value;
+  
+        var errorEmail = document.getElementById('error-email');
+        var errorPassword = document.getElementById('error-password');
+        var errorPassword2 = document.getElementById('error-password2');
+  
+        // Check if email is empty
+        if (!email) {
+            errorEmail.innerText = 'This field is required.';
             return;
-        } else {
-            // Check if password1 is empty
-            if (!password1) {
-                errorPassword.innerText = 'This field is required.';
-                return;
-            }
-
-            // Check if confirm password is empty
-            if (!password2) {
-                errorPassword2.innerText = 'This field is required.';
-                return;
-            }
-
-            // Check if passwords match
-            if (password1 !== password2) {
-                errorPassword2.innerText = 'Passwords do not match.';
-                return;
-            }
-
-            // Clear any existing errors
-            errorEmail.innerText = '';
-            errorPassword.innerText = '';
-            errorPassword2.innerText = '';
-
-            // If no errors, go to next page
-            nextPage(2);
         }
-    });
-});
-
-
-
-    document.getElementById("next2").addEventListener('click', function(event) {
-      event.preventDefault();
-      nextPage(3);
-    });
-
-    document.getElementById("signupForm").addEventListener('submit', function(event) {
-    event.preventDefault();
-    var form = document.getElementById("signupForm");
-    var formData = new FormData(form);
-
-    // add the password field
-    formData.set('password', formData.get('password1'));
-
-    for(var pair of formData.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
-    }
-
-    fetch('/register/', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-        },
-        credentials: 'same-origin'
-    }).then(response => response.json()).then(data => {
-        if (data.errors) {
-            console.log(data.errors);
-            for (var key in data.errors) {
-                var errorField = document.getElementById('error-' + key);
-                if (errorField) {
-                    errorField.innerText = data.errors[key];
+  
+        // Check if email is valid
+        var re = /\S+@\S+\.\S+/;
+        if (!re.test(email)) {
+            errorEmail.innerText = 'Please enter a valid email.';
+            return;
+        }
+  
+        // Check if email already exists
+        fetch('/check_email/?email=' + email)
+        .then(response => response.json())
+        .then(data => {
+            if (data.is_taken) {
+                errorEmail.innerText = 'This email is already registered.';
+                return;
+            } else {
+                // Check if password1 is empty
+                if (!password1) {
+                    errorPassword.innerText = 'This field is required.';
+                    return;
                 }
+  
+                // Check if confirm password is empty
+                if (!password2) {
+                    errorPassword2.innerText = 'This field is required.';
+                    return;
+                }
+  
+                // Check if passwords match
+                if (password1 !== password2) {
+                    errorPassword2.innerText = 'Passwords do not match.';
+                    return;
+                }
+  
+                // Clear any existing errors
+                errorEmail.innerText = '';
+                errorPassword.innerText = '';
+                errorPassword2.innerText = '';
+  
+                // If no errors, go to next page
+                nextPage(2);
             }
-        } else {
-            // No errors, form has been submitted
-            modal.style.display = "none";
-            // Redirect to the home view
-            window.location.href = data.redirect;
+        });
+      });
+  
+      document.getElementById("next2").addEventListener('click', function(event) {
+        event.preventDefault();
+        nextPage(3);
+      });
+  
+      document.getElementById("signupForm").addEventListener('submit', function(event) {
+        event.preventDefault();
+        var form = document.getElementById("signupForm");
+        var formData = new FormData(form);
+  
+        // add the password field
+        formData.set('password', formData.get('password1'));
+  
+        for(var pair of formData.entries()) {
+          console.log(pair[0] + ', ' + pair[1]);
         }
-    }).catch(error => {
-        console.error('Error:', error);
-    });
-});
-
-
+  
+        fetch('/register/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            credentials: 'same-origin'
+        }).then(response => response.json()).then(data => {
+            if (data.errors) {
+                console.log(data.errors);
+                for (var key in data.errors) {
+                    var errorField = document.getElementById('error-' + key);
+                    if (errorField) {
+                        errorField.innerText = data.errors[key];
+                    }
+                }
+            } else {
+                // No errors, form has been submitted
+                // Redirect to the home view
+                window.location.href = data.redirect;
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+      });
+    };
   </script>
+  
 
 {% endblock %}
 
@@ -195,6 +169,8 @@
     }
   </style>
 {% endblock %}
+
+
 
 
 
