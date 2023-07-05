@@ -15,9 +15,11 @@ from django.contrib import messages  # Don't forget to import messages
 def home(request):
     can_post = True
     form = PostForm()
-
+    
+    user_has_posted = False
     if request.user.is_authenticated:
-        if Post.objects.filter(user=request.user, created_at__gte=timezone.now()-timedelta(weeks=1)).exists():
+        user_has_posted = Post.objects.filter(user=request.user, created_at__gte=timezone.now()-timedelta(weeks=1)).exists()
+        if user_has_posted:
             can_post = False
 
         if request.method == 'POST':
@@ -37,7 +39,10 @@ def home(request):
     random.shuffle(shuffled_colors)
 
     if request.user.is_authenticated:
-        posts = Post.objects.exclude(user=request.user).exclude(likes=request.user).order_by('-created_at')
+        if user_has_posted:
+            posts = Post.objects.exclude(user=request.user).exclude(likes=request.user).order_by('-created_at')
+        else:
+            posts = Post.objects.none()
         template = 'loggedin.html'
     else:
         posts = Post.objects.all().order_by('-created_at')
@@ -51,6 +56,8 @@ def home(request):
     }
 
     return render(request, template, context)
+
+
 
 
 
