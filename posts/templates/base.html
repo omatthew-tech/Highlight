@@ -12,7 +12,9 @@
 </head>
 <body>
     <header>
-        {% include 'navbar.html' %}
+        {% if not is_home %}
+            {% include 'navbar.html' %}
+        {% endif %}
     </header>
 
     <div class="content-wrapper">
@@ -20,7 +22,6 @@
         <!-- This block will be overridden by each individual template -->
         {% endblock %}
     </div>
-    
 
     <footer>
         <!-- Common footer elements go here -->
@@ -30,6 +31,7 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
+
 
 
 

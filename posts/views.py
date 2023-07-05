@@ -55,7 +55,11 @@ def home(request):
         'can_post': can_post,
     }
 
+    if template == 'home.html':
+        context['is_home'] = True
+
     return render(request, template, context)
+
 
 
 

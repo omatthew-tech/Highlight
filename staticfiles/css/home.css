@@ -83,6 +83,33 @@ h1 {
     }
 }
 
+.highlight-title {
+    font-size: 72px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.auth-button {
+    display: inline-block;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.auth-link {
+    display: inline-block;
+    color: #000;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+
 
 
 
