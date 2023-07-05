@@ -29,7 +29,9 @@ body > div.content-wrapper {
   border-radius: 5px;
   border: 1px solid #cccccc;
   box-sizing: border-box;
+  font-size: 16px;  /* Add this line */
 }
+
 
 #error-email,
 #error-password,
