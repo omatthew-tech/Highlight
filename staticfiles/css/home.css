@@ -16,6 +16,43 @@ body > div.content-wrapper {
     margin-bottom: 60px;
 }
 
+.auth-buttons {
+    display: flex;
+    justify-content: center; /* Add this line */
+}
+
+.auth-button, .auth-link {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 25px; /* Make the buttons rounder */
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold; /* Make the text bold */
+    transition: background-color 0.3s ease; /* Add a transition for a smooth hover effect */
+}
+
+.auth-button {
+    background-color: #000;
+    color: #fff;
+    margin-right: 15px; /* Add some margin to the right of the Login button */
+}
+
+.auth-button:hover, .auth-link:hover {
+    background-color: #333; /* Change the background color on hover */
+    text-decoration: none;
+}
+
+.auth-link {
+    color: #000;
+    background-color: #fff; /* Make the Sign Up button white */
+    border: 2px solid #000; /* Add a border to the Sign Up button */
+}
+
+.auth-link:hover {
+    color: #fff;
+    background-color: #333; /* Change the background and text color on hover */
+}
+
 .row-container {
     position: absolute;
     top: 0;
@@ -51,6 +88,11 @@ body > div.content-wrapper {
     padding: 2em;
     max-width: 80%;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 @keyframes sweep-right {
@@ -89,25 +131,6 @@ h1 {
     margin-bottom: 20px;
 }
 
-.auth-button {
-    display: inline-block;
-    background-color: #000;
-    color: #fff;
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-}
-
-.auth-link {
-    display: inline-block;
-    color: #000;
-    text-decoration: none;
-}
-
-.auth-link:hover {
-    text-decoration: underline;
-}
 
 
 
