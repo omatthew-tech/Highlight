@@ -3,35 +3,38 @@
 {% load static %}
 
 {% block content %}
-  <div class="form-container">
-    <h2>Register</h2>
-    <form method="post" enctype="multipart/form-data" id="signupForm" class="signup-form">
-      {% csrf_token %}
-      <div id="page1" class="signupPage">
-        <p><input type="email" name="email" id="email" required placeholder="Email"></p><p id="error-email"></p>
-        <p><input type="password" name="password1" id="password1" required placeholder="Password"></p>
-        <p id="error-password"></p>
-        <p><input type="password" name="password2" id="password2" required placeholder="Confirm Password"></p>
-        <p id="error-password2"></p>
-        <button type="button" id="next1" class="btn-submit">Next</button>
-      </div>
+<div class="form-container">
+  <h2>Register</h2>
+  <form method="post" enctype="multipart/form-data" id="signupForm" class="signup-form">
+    {% csrf_token %}
+    <div id="page1" class="signupPage">
+      <p><input type="email" name="email" id="email" required placeholder="Email" class="input-field"></p><p id="error-email"></p>
+      <p><input type="password" name="password1" id="password1" required placeholder="Password" class="input-field"></p>
+      <p id="error-password"></p>
+      <p><input type="password" name="password2" id="password2" required placeholder="Confirm Password" class="input-field"></p>
+      <p id="error-password2"></p>
+      <button type="button" id="next1" class="btn-submit">Next</button>
+    </div>
 
-      <div id="page2" class="signupPage" style="display: none;">
-        <p><input type="text" name="username" id="username" placeholder="Username (Optional)"></p><p id="error-username"></p>
-        <button type="button" id="next2" class="btn-submit">Next</button>
-      </div>
+    <div id="page2" class="signupPage" style="display: none;">
+      <p><input type="text" name="username" id="username" placeholder="Username (Optional)" class="input-field"></p><p id="error-username"></p>
+      <button type="button" id="next2" class="btn-submit">Next</button>
+    </div>
 
-      <div id="page3" class="signupPage" style="display: none;">
-        <p><input type="text" name="first_name" id="first_name" placeholder="First Name"></p><p id="error-first_name"></p>
-        <p><input type="text" name="last_name" id="last_name" placeholder="Last Name"></p><p id="error-last_name"></p>
-        <p>Image: {{ p_form.image }}</p><p id="error-image"></p>
-        <p>Location: {{ p_form.location }}</p><p id="error-location"></p>
-        <p>Bio: {{ p_form.bio }}</p><p id="error-bio"></p>
-        <button type="submit" id="submit" class="btn-submit">Submit</button>
-      </div>
+    <div id="page3" class="signupPage" style="display: none;">
+      <p><input type="text" name="first_name" id="first_name" placeholder="First Name" class="input-field"></p><p id="error-first_name"></p>
+      <p><input type="text" name="last_name" id="last_name" placeholder="Last Name" class="input-field"></p><p id="error-last_name"></p>
+      <p>Image: {{ p_form.image }}</p><p id="error-image"></p>
+      <p>Location: {{ p_form.location }}</p><p id="error-location"></p>
+      <p>Bio: {{ p_form.bio }}</p><p id="error-bio"></p>
+      <button type="submit" id="submit" class="btn-submit">Submit</button>
+    </div>
+  </form>
+</div>
 
-    </form>
-  </div>
+
+
+
   <script>
     window.onload = function() {
   
