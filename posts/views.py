@@ -49,18 +49,19 @@ def home(request):
         template = 'home.html'
 
     context = {
-    'form': form,
-    'posts': posts,
-    'shuffled_colors': shuffled_colors,
-    'can_post': can_post,
-    'user_has_posted': user_has_posted,
-}
-
+        'form': form,
+        'posts': posts,
+        'shuffled_colors': shuffled_colors,
+        'can_post': can_post,
+        'user_has_posted': user_has_posted,
+        'active_page': 'home'  # Added this line
+    }
 
     if template == 'home.html':
         context['is_home'] = True
 
     return render(request, template, context)
+
 
 
 
@@ -179,7 +180,8 @@ def view_profile(request, username):
         'profile_user': profile_user,
         'posts': posts,
         'are_friends': are_friends,
-        'friend_request_sent': friend_request_sent,  # add this line
+        'friend_request_sent': friend_request_sent,
+        'active_page': 'profile'  # Added this line
     }
 
     return render(request, 'profile.html', context)
@@ -306,7 +308,11 @@ def accept_friend_request(request, request_id):
 def view_friend_requests(request):
     # Get all friend requests where the current user is the target
     friend_requests = FriendRequest.objects.filter(to_profile=request.user.profile, status='pending')
-    return render(request, 'friend_requests.html', {'friend_requests': friend_requests})
+    context = {
+        'friend_requests': friend_requests,
+        'active_page': 'view_friend_requests'  # add this line
+    }
+    return render(request, 'friend_requests.html', context)
 
 
 @login_required

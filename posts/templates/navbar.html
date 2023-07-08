@@ -31,21 +31,31 @@
         </div>
     {% endif %}
 
-    <div class="navbar-links" id="navbar-links">
-        <!-- Navigation links go here -->
+    {% if request.user.is_authenticated %}
+    <div class="nav-icons">
+        <a href="{% url 'home' %}" class="active">
+            <img src="{% static 'images/' %}{% if active_page == 'home' %}filled_home_icon.png{% else %}home_icon.png{% endif %}" alt="Home Icon">
 
-        <!-- Check if user is authenticated -->
-        {% if request.user.is_authenticated %}
-            <!-- Links to show when the user is logged in -->
-            <a href="{% url 'view_profile' request.user.username %}">Profile</a>
-            <a href="{% url 'view_friend_requests' %}">Friend Requests</a>
-            <a href="{% url 'logout' %}">Logout</a>
-        {% endif %}
+        </a>
+        <a href="{% url 'view_friend_requests' %}" class="{% if active_page == 'view_friend_requests' %}active{% endif %}">
+            <img src="{% static 'images/' %}{% if active_page == 'view_friend_requests' %}filled_friendrequests_icon.png{% else %}friendrequests_icon.png{% endif %}" alt="Friends Icon">
+        </a>
+        <a href="{% url 'view_profile' request.user.username %}" class="{% if active_page == 'view_profile' %}active{% endif %}">
+            <img src="{% static 'images/' %}{% if active_page == 'view_profile' %}filled_highlighter_icon.png{% else %}highlighter_icon.png{% endif %}" alt="Notifications Icon">
+        </a>
+        <a href="{% url 'view_profile' request.user.username %}" class="{% if active_page == 'view_profile' %}active{% endif %}">
+            <img src="{{ request.user.profile.image.url }}" alt="Profile Icon" class="avatar{% if active_page == 'view_profile' %} avatar-active{% endif %}">
+        </a>
     </div>
+    {% endif %}
+
+    
 </nav>
 
 <!-- Load the navbar.js -->
 <script src="{% static 'js/navbar.js' %}" defer></script>
+
+
 
 
 

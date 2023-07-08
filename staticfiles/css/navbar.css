@@ -3,6 +3,14 @@ header, footer {
     position: relative;
 }
 
+.active img {
+    filter: brightness(0); /* make the image appear filled in */
+}
+
+.avatar-active {
+    border: 3px solid black; /* dark circle around the profile picture */
+}
+
 nav {
     display: flex;
     justify-content: space-between;
@@ -27,54 +35,12 @@ nav {
     height: auto;
 }
 
-
 #search {
     /* Center alignment */
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-}
-
-/* Add CSS for the hamburger menu */
-.hamburger-menu {
-    /* Align to the right */
-    position: absolute;
-    right: 0px;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    cursor: pointer;
-    z-index: 2;
-}
-.hamburger-menu div {
-    width: 2rem;
-    height: 0.25rem;
-    background-color: #333;
-}
-
-/* Add CSS for the navbar links */
-.navbar-links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    z-index: 1;
-}
-
-
-.navbar-links a {
-    padding: 1rem;
-    display: block;
-    border-top: 1px solid #ddd;
-}
-.navbar-active {
-    display: block;
 }
 
 /* Style for the auth buttons */
@@ -89,37 +55,7 @@ nav {
     gap: 10px; /* Adjust gap between buttons */
 }
 
-
-
-
-/* Add CSS for the dropdown menu on smaller screens */
-@media (max-width: 768px) {
-    .navbar-links {
-        flex-flow: column nowrap;
-        position: fixed;
-        transform: translateX(100%);
-        top: 0;
-        right: 0;
-        height: 100vh;
-        width: 300px;
-        padding-top: 3.5rem;
-        transition: transform 0.3s ease-in-out;
-        background-color: #fff;
-    }
-
-    .navbar-active {
-        transform: translateX(0);
-    }
-
-    .hamburger-menu {
-        display: flex;
-    }
-}
-
-
-
 /* search.css */
-
 #search-results {
     display: none;
     max-height: 600px;
@@ -184,6 +120,42 @@ nav {
     display: flex;
     align-items: center;
 }
+
+
+.nav-icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 48px;
+    background-color: #f8f8f8;
+    border-top: 1px solid #e7e7e7;
+}
+
+.nav-icons a img {
+    width: 24px;
+    height: 24px;
+}
+
+@media screen and (min-width: 1024px) {
+    .nav-icons {
+        width: 48px;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: auto;
+        flex-direction: column;
+        border-right: 1px solid #e7e7e7;
+        border-top: none;
+    }
+}
+
+
+
+
 
 
 
