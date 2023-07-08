@@ -49,11 +49,13 @@ def home(request):
         template = 'home.html'
 
     context = {
-        'form': form,
-        'posts': posts,
-        'shuffled_colors': shuffled_colors,
-        'can_post': can_post,
-    }
+    'form': form,
+    'posts': posts,
+    'shuffled_colors': shuffled_colors,
+    'can_post': can_post,
+    'user_has_posted': user_has_posted,
+}
+
 
     if template == 'home.html':
         context['is_home'] = True

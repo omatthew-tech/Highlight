@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-  <h1>Welcome back!</h1>
+  <h1>Home</h1>
 
   <!-- Link to the CSS -->
   <link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
@@ -27,13 +27,17 @@
   </div>
   {% endif %}
 
-  <h2>Here are the posts:</h2>
+  {% if user_has_posted %}
 
-  {% for post in posts %}
-  {% include 'post.html' with post=post show_like_button=True %}
+    {% for post in posts %}
+    {% include 'post.html' with post=post show_like_button=True %}
 
-  {% endfor %}
+    {% endfor %}
+  {% else %}
+    <h2>Please submit your weekly highlight before viewing others' highlights.</h2>
+  {% endif %}
 {% endblock %}
+
 
 
 
