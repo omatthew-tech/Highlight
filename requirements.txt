@@ -47,7 +47,6 @@ greenlet==2.0.2
 grpcio==1.51.1
 grpcio-status==1.51.1
 gunicorn==20.1.0
-heroku==0.1.4
 httplib2==0.21.0
 hyperlink==21.0.0
 idna==3.4
