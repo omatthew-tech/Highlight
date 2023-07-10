@@ -3,6 +3,8 @@ asgiref==3.6.0
 attrs==22.2.0
 autobahn==23.1.1
 Automat==22.10.0
+boto3==1.28.1
+botocore==1.31.1
 CacheControl==0.12.11
 cachetools==5.3.0
 certifi==2022.12.7
@@ -25,6 +27,7 @@ django-froala-editor==4.0.17
 django-heroku==0.3.1
 django-js-asset==2.0.0
 django-rest-auth==0.9.5
+django-s3direct==2.0.3
 djangorestframework==3.14.0
 fcm-django==1.0.12
 filelock==3.9.0
@@ -49,6 +52,7 @@ httplib2==0.21.0
 hyperlink==21.0.0
 idna==3.4
 incremental==22.10.0
+jmespath==1.0.1
 msgpack==1.0.4
 mysqlclient==2.1.1
 Pillow==9.4.0
@@ -61,10 +65,11 @@ pyasn1-modules==0.2.8
 pycparser==2.21
 pyOpenSSL==23.0.0
 pyparsing==3.0.9
-python-dateutil==1.5
+python-dateutil==2.8.2
 pytz==2022.7.1
 requests==2.28.2
 rsa==4.9
+s3transfer==0.6.1
 service-identity==21.1.0
 six==1.16.0
 sqlparse==0.4.3
@@ -79,3 +84,4 @@ websocket==0.2.1
 whitenoise==6.5.0
 zope.event==4.6
 zope.interface==5.5.2
+
