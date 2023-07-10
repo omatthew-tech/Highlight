@@ -28,6 +28,7 @@ django-heroku==0.3.1
 django-js-asset==2.0.0
 django-rest-auth==0.9.5
 django-s3direct==2.0.3
+django-storages==1.13.2
 djangorestframework==3.14.0
 fcm-django==1.0.12
 filelock==3.9.0
@@ -47,6 +48,7 @@ greenlet==2.0.2
 grpcio==1.51.1
 grpcio-status==1.51.1
 gunicorn==20.1.0
+heroku==0.1.4
 httplib2==0.21.0
 hyperlink==21.0.0
 idna==3.4
@@ -83,4 +85,3 @@ websocket==0.2.1
 whitenoise==6.5.0
 zope.event==4.6
 zope.interface==5.5.2
-
