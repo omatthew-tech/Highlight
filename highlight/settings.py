@@ -43,14 +43,13 @@ INSTALLED_APPS = [
     'posts',
     'django.contrib.humanize',
 
-    'whitenoise.runserver_nostatic',
     'storages',
     
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
