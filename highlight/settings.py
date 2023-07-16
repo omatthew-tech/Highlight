@@ -133,7 +133,7 @@ if not DEBUG:
     
     # Media files (Images, etc.)
     AWS_MEDIA_BUCKET_NAME = 'highlight-media'  # Your media bucket name
-    AWS_S3_REGION_NAME = 'us-east-1'  # Change this to your AWS region
+    AWS_S3_REGION_NAME = 'us-east-2'  # Change this to your AWS region
     AWS_MEDIA_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_MEDIA_BUCKET_NAME
     AWS_MEDIA_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
