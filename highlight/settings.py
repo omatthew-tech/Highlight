@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%jvi(+w1_5$4=-!-z#%b2r#$l!7l9+gncv04v4ng==lw*=%&l&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True    
 
 ALLOWED_HOSTS = ['127.0.0.1', 'try-highlight-7bf7ec6ead0e.herokuapp.com']
 
@@ -128,11 +128,23 @@ AWS_LOCATION = 'static'
 if not DEBUG:
     STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    DEFAULT_FILE_STORAGE = 'highlight.storage_backends.MediaStorage'
 
+# Media files (Images, etc.)
+AWS_MEDIA_BUCKET_NAME = 'highlight-media'  # Your media bucket name
+AWS_S3_REGION_NAME = 'us-east-1'  # Change this to your AWS region
+AWS_MEDIA_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_MEDIA_BUCKET_NAME
+AWS_MEDIA_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_MEDIA_LOCATION = 'media'
+
+if not DEBUG:
+    MEDIA_URL = "https://%s/%s/" % (AWS_MEDIA_S3_CUSTOM_DOMAIN, AWS_MEDIA_LOCATION)
+    DEFAULT_FILE_STORAGE = 'highlight.storage_backends.MediaStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 
 django_heroku.settings(locals())
+
