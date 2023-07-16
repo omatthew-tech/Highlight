@@ -111,6 +111,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AWS_DEFAULT_ACL = None
+
+
 # AWS S3 settings
 AWS_ACCESS_KEY_ID = 'AKIA2XVH2D65CNLVQRW6'
 AWS_SECRET_ACCESS_KEY = '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'
