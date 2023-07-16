@@ -1,0 +1,167 @@
+html, body {
+    height: 100vh;
+    margin: 0;
+    background-color: white;
+    overflow: hidden;
+}
+
+body > div.content-wrapper {
+    height: calc(100% - 60px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+.auth-buttons {
+    display: flex;
+    justify-content: center; /* Add this line */
+}
+
+.auth-button, .auth-link {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 25px; /* Make the buttons rounder */
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold; /* Make the text bold */
+    transition: background-color 0.3s ease; /* Add a transition for a smooth hover effect */
+}
+
+.auth-button {
+    background-color: #000;
+    color: #fff;
+    margin-right: 15px; /* Add some margin to the right of the Login button */
+}
+
+.auth-button:hover, .auth-link:hover {
+    background-color: #333; /* Change the background color on hover */
+    text-decoration: none;
+}
+
+.auth-link {
+    color: #000;
+    background-color: #fff; /* Make the Sign Up button white */
+    border: 2px solid #000; /* Add a border to the Sign Up button */
+}
+
+.auth-link:hover {
+    color: #fff;
+    background-color: #333; /* Change the background and text color on hover */
+}
+
+.row-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.row-right, .row-left {
+    height: calc(100% / 18);
+    box-sizing: border-box; 
+    background: white;
+}
+
+.row-right {
+    background: linear-gradient(270deg, white 50%, yellow 50%);
+    background-size: 200% 100%;
+    background-position: right;
+}
+
+.row-left {
+    background: linear-gradient(90deg, white 50%, yellow 50%);
+    background-size: 200% 100%;
+    background-position: left;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    padding: 2em;
+    max-width: 80%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+@keyframes sweep-right {
+    0% { background-position: right; }
+    100% { background-position: left; }
+}
+
+@keyframes sweep-left {
+    0% { background-position: left; }
+    100% { background-position: right; }
+}
+
+.sweep-right {
+    animation: sweep-right 2s forwards;
+}
+
+.sweep-left {
+    animation: sweep-left 2s forwards;
+}
+
+/* Default style for larger screens */
+h1 {
+    font-size: 60px;
+}
+
+/* Style for screens with max-width of 600px */
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 40px;
+    }
+}
+
+.highlight-title {
+    font-size: 72px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+body > div.content-wrapper {
+  height: calc(100% - 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+  margin-bottom: 80px;
+}
+
+.form-container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  width: 90%; /* Set width to 90% for padding on mobile screens */
+  max-width: 400px;
+  margin: 0 auto; /* Center the form container */
+}
+
+.signup-form .signupPage p {
+  margin-bottom: 20px;
+}
+
+.signup-form .input-field {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+#error-email,
+#error-password,
+#error-password2,
+#error-username,
+#error-image,
+#error-location,
+#error-bio {
+  color: red;
+  margin-bottom: 10px; /* Add margin for error messages */
+}
+
+.btn-submit {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 25px; /* Make the button rounder */
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold; /* Make the text bold */
+  transition: background-color 0.3s ease; /* Add a transition for a smooth hover effect */
+  background-color: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-submit:hover {
+  background-color: #333; /* Change the background color on hover */
+  text-decoration: none;
+}
+
+/* Style for screens with max-width of 600px */
+@media screen and (max-width: 600px) {
+  .form-container {
+    padding: 10px;
+    width: 90%; /* Allow some space on the sides on mobile */
+    margin: 0 auto; /* Center the form container */
+  }
+
+  .input-field {
+    font-size: 14px;
+  }
+}
+
+
+
+  
