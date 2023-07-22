@@ -13,6 +13,8 @@ from .forms import PostForm
 from django.contrib import messages  # Don't forget to import messages
 
 def home(request):
+    view_mode = request.GET.get('view_mode')
+
     can_post = True
     form = PostForm()
     
@@ -39,10 +41,14 @@ def home(request):
     random.shuffle(shuffled_colors)
 
     if request.user.is_authenticated:
-        if user_has_posted:
-            posts = Post.objects.exclude(user=request.user).exclude(likes=request.user).order_by('-created_at')
+        if view_mode == 'Friends':
+            friend_list = request.user.profile.friends.all()
+            posts = Post.objects.filter(user__profile__in=friend_list).order_by('-created_at')
         else:
-            posts = Post.objects.none()
+            if user_has_posted:
+                posts = Post.objects.exclude(user=request.user).exclude(likes=request.user).order_by('-created_at')
+            else:
+                posts = Post.objects.none()
         template = 'loggedin.html'
     else:
         posts = Post.objects.all().order_by('-created_at')
@@ -54,13 +60,15 @@ def home(request):
         'shuffled_colors': shuffled_colors,
         'can_post': can_post,
         'user_has_posted': user_has_posted,
-        'active_page': 'home'  # Added this line
+        'active_page': 'home',
+        'view_mode': view_mode
     }
 
     if template == 'home.html':
         context['is_home'] = True
 
     return render(request, template, context)
+
 
 
 
